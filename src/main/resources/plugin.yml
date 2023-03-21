@@ -1,0 +1,8 @@
+main: dev.risas.blockremover.BlockRemover
+name: ${project.artifactId}
+version: ${project.version}
+api-version: 1.13
+author: Risas
+commands:
+  blockremover:
+    aliases: ["br"]

@@ -1,0 +1,5 @@
+block-remove-system:
+  worlds:
+    - "world"
+  blocks:
+    - "GRASS_BLOCK:60" # format: "block:seconds"
