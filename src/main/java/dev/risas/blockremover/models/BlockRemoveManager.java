@@ -57,6 +57,10 @@ public class BlockRemoveManager {
         removeBlocksTime.put(location, time);
     }
 
+    public void removeRemoveBlockTime(Location location) {
+        removeBlocksTime.remove(location);
+    }
+
     public void loadBlocks() {
         for (String block : plugin.getConfigFile().getStringList("block-remove-system.blocks")) {
             String[] blockSplit = block.split(":");
