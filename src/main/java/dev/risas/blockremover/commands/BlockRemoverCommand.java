@@ -24,6 +24,11 @@ public class BlockRemoverCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("blockremover.admin")) {
+            ChatUtil.sendMessage(sender, "&cYou do not have permission to execute this command.");
+            return true;
+        }
+
         if (args.length == 0) {
             ChatUtil.sendMessage(sender, new String[]{
                     ChatUtil.NORMAL_LINE,
