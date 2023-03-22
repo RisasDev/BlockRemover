@@ -48,12 +48,6 @@ public class BlockRemoveManager {
         removeBlocksTime.put(block, time);
     }
 
-    public void onDisable() {
-        for (Block block : removeBlocksTime.keySet()) {
-            block.setType(Material.AIR);
-        }
-    }
-
     public void onLoad() {
         for (String worldName : plugin.getConfigFile().getStringList("block-remove-system.worlds")) {
             World world = Bukkit.getWorld(worldName);
@@ -81,5 +75,11 @@ public class BlockRemoveManager {
     public void onReload() {
         this.removeBlocks.clear();
         this.onLoad();
+    }
+
+    public void onDisable() {
+        for (Block block : removeBlocksTime.keySet()) {
+            block.setType(Material.AIR);
+        }
     }
 }
