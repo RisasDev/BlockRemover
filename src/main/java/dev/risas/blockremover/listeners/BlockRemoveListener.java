@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 /**
@@ -32,18 +33,19 @@ public class BlockRemoveListener implements Listener {
     private void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
 
-        if (!blockRemoveManager.getWorlds().contains(player.getWorld())) return;
+        if (!blockRemoveManager.getWorlds().contains(player.getWorld())
+                || player.hasPermission("blockremover.bypass")) return;
 
-        Block block = event.getBlock();
+        Block block = event.getBlockPlaced();
 
-        if (!blockRemoveManager.getRemoveBlocks().containsKey(block.getType())) return;
+        if (!blockRemoveManager.isAllRemoveBlocks() && !blockRemoveManager.getRemoveBlocks().containsKey(block.getType())) return;
 
         if (blockRemoveManager.getRemoveBlocksTime().isEmpty()) {
             BlockRemoveTask blockRemoveTask = new BlockRemoveTask(plugin);
             blockRemoveTask.start();
         }
 
-        blockRemoveManager.addRemoveBlockTime(block.getLocation(), block.getType());
+        blockRemoveManager.addRemoveBlockTime(block);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -54,7 +56,6 @@ public class BlockRemoveListener implements Listener {
 
         Block block = event.getBlock();
 
-        if (!blockRemoveManager.getRemoveBlocksTime().containsKey(block.getLocation())) return;
-        blockRemoveManager.removeRemoveBlockTime(block.getLocation());
+        blockRemoveManager.getRemoveBlocksTime().remove(block);
     }
 }
