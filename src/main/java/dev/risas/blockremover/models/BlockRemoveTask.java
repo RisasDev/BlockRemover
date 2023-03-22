@@ -2,9 +2,8 @@ package dev.risas.blockremover.models;
 
 import dev.risas.blockremover.BlockRemover;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 
 /**
  * Created by Risas
@@ -31,24 +30,22 @@ public class BlockRemoveTask implements Runnable {
             cancel();
             return;
         }
-
-        for (Location location : blockRemoveManager.getRemoveBlocksTime().keySet()) {
-            long time = blockRemoveManager.getRemoveBlockTimeRemaining(location);
+        
+        for (Block block : blockRemoveManager.getRemoveBlocksTime().keySet()) {
+            long time = blockRemoveManager.getRemoveBlockTimeRemaining(block);
 
             if (time <= 0) {
-                BlockState blockState = location.getBlock().getState();
-                blockState.setType(Material.AIR);
-                blockState.update(true, false);
-                blockRemoveManager.getRemoveBlocksLocations().add(location);
+                block.setType(Material.AIR);
+                blockRemoveManager.getRemoveBlocksCache().add(block);
             }
         }
 
-        blockRemoveManager.getRemoveBlocksLocations().forEach(blockRemoveManager.getRemoveBlocksTime()::remove);
-        blockRemoveManager.getRemoveBlocksLocations().clear();
+        blockRemoveManager.getRemoveBlocksCache().forEach(blockRemoveManager.getRemoveBlocksTime()::remove);
+        blockRemoveManager.getRemoveBlocksCache().clear();
     }
 
     public void start() {
-        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 20L, 20L);
+        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 2L, 2L);
     }
 
     public void cancel() {

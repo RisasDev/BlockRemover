@@ -2,4 +2,8 @@ block-remove-system:
   worlds:
     - "world"
   blocks:
-    - "GRASS_BLOCK:60" # format: "block:seconds"
+    all:
+      enabled: true
+      time: "1m"
+    specifics:
+      - "GRASS_BLOCK:1m" # format: "block:1m"
