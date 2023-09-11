@@ -72,6 +72,10 @@ public class BlockRemoveManager {
         }
     }
 
+    public boolean isOnWorld(World world) {
+        return worlds.isEmpty() || worlds.contains(world);
+    }
+
     public void onReload() {
         this.removeBlocks.clear();
         this.onLoad();

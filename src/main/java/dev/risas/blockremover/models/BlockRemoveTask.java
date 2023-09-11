@@ -45,7 +45,7 @@ public class BlockRemoveTask implements Runnable {
     }
 
     public void start() {
-        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 2L, 2L);
+        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 20L, 20L);
     }
 
     public void cancel() {

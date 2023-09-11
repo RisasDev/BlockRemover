@@ -3,6 +3,7 @@ name: ${project.artifactId}
 version: ${project.version}
 api-version: 1.13
 author: Risas
+softdepend: ["Multiverse-Core"]
 commands:
   blockremover:
     aliases: ["br"]

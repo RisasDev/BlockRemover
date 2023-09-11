@@ -3,12 +3,13 @@ package dev.risas.blockremover.listeners;
 import dev.risas.blockremover.BlockRemover;
 import dev.risas.blockremover.models.BlockRemoveManager;
 import dev.risas.blockremover.models.BlockRemoveTask;
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 /**
@@ -29,12 +30,11 @@ public class BlockRemoveListener implements Listener {
         this.blockRemoveManager = plugin.getBlockRemoveManager();
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     private void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
 
-        if (!blockRemoveManager.getWorlds().contains(player.getWorld())
-                || player.hasPermission("blockremover.bypass")) return;
+        if (!blockRemoveManager.isOnWorld(player.getWorld()) || player.getGameMode() == GameMode.CREATIVE) return;
 
         Block block = event.getBlockPlaced();
 
@@ -48,11 +48,11 @@ public class BlockRemoveListener implements Listener {
         blockRemoveManager.addRemoveBlockTime(block);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     private void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
 
-        if (!blockRemoveManager.getWorlds().contains(player.getWorld())) return;
+        if (!blockRemoveManager.isOnWorld(player.getWorld())) return;
 
         Block block = event.getBlock();
 
